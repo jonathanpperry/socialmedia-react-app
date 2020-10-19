@@ -19,6 +19,7 @@ const {
 const {
   signup,
   login,
+  loginWithFacebook,
   uploadImage,
   addUserDetails,
   getAuthenticatedUser,
@@ -38,6 +39,7 @@ app.post('/scream/:screamId/comment', FBAuth, commentOnScream);
 // users routes
 app.post('/signup', signup);
 app.post('/login', login);
+app.post('/loginWithFacebook', loginWithFacebook);
 app.post('/user/image', FBAuth, uploadImage);
 app.post('/user', FBAuth, addUserDetails);
 app.get('/user', FBAuth, getAuthenticatedUser);

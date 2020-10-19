@@ -40,7 +40,8 @@ if (token) {
 }
 
 axios.defaults.baseURL =
-  "https://europe-west1-socialape-710af.cloudfunctions.net/api";
+  "http://localhost:5000/socialape-710af/europe-west1/api";
+// "https://europe-west1-socialape-710af.cloudfunctions.net/api";
 
 class App extends Component {
   render() {

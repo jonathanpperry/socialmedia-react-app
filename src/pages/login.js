@@ -13,33 +13,36 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Redux
 import { connect } from "react-redux";
-import { loginUser } from "../redux/actions/userActions";
+import { loginUser, loginUserWithFacebook } from "../redux/actions/userActions";
+
+// Components
+import Facebook from "../components/layout/Facebook";
 
 const styles = {
   form: {
-    textAlign: "center"
+    textAlign: "center",
   },
   image: {
-    margin: "20px auto 20px auto"
+    margin: "20px auto 20px auto",
   },
   pageTitle: {
-    margin: "10px auto 10px auto"
+    margin: "10px auto 10px auto",
   },
   textField: {
-    margin: "10px auto 10px auto"
+    margin: "10px auto 10px auto",
   },
   button: {
     marginTop: 20,
-    position: "relative"
+    position: "relative",
   },
   customError: {
     color: "red",
     fontSize: "0.8rem",
-    marginTop: 10
+    marginTop: 10,
   },
   progress: {
-    position: "absolute"
-  }
+    position: "absolute",
+  },
 };
 
 class login extends Component {
@@ -48,7 +51,7 @@ class login extends Component {
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -56,23 +59,27 @@ class login extends Component {
       this.setState({ errors: nextProps.UI.errors });
     }
   }
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const userData = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
     this.props.loginUser(userData, this.props.history);
   };
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
+  };
+  logInWithFacebook = () => {
+    console.log("logging in with facebook");
+    this.props.loginUserWithFacebook();
   };
   render() {
     const {
       classes,
-      UI: { loading }
+      UI: { loadingEmail, loadingFacebook },
     } = this.props;
     const { errors } = this.state;
     return (
@@ -118,10 +125,10 @@ class login extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              disabled={loading}
+              disabled={loadingEmail}
             >
               Log In
-              {loading && (
+              {loadingEmail && (
                 <CircularProgress size={30} className={classes.progress} />
               )}
             </Button>
@@ -130,6 +137,10 @@ class login extends Component {
               Don't have an account? Sign up <Link to="/signup">here!</Link>
             </small>
           </form>
+          <small>Log in with social media providers:</small>
+          <br />
+          <Facebook />
+          <br />
         </Grid>
         <Grid item sm />
       </Grid>
@@ -141,16 +152,17 @@ login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  UI: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
-  UI: state.UI
+  UI: state.UI,
 });
 
 const mapActionsToProps = {
-  loginUser
+  loginUser,
+  loginUserWithFacebook,
 };
 
 export default connect(
